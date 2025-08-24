@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - VolunteerHub</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../index.html">
+                        <i class="fas fa-hands-helping"></i>
+                        <span>VolunteerHub</span>
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="events.html" class="active">Events</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="nav-auth" id="navAuth">
+                    <div class="auth-dropdown" id="authDropdown">
+                        <button class="btn-primary" onclick="toggleAuthDropdown()">Get Started <i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown-menu" id="authDropdownMenu">
+                            <a href="#" onclick="showLogin()"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="#" onclick="showSignup()"><i class="fas fa-user-plus"></i> Sign Up</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Volunteer Events</h1>
+                <p>Discover meaningful opportunities to make a difference in your community</p>
+            </div>
+
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Browse Events</h2>
+                    <div class="section-filters">
+                        <select id="categoryFilter" onchange="filterEvents()">
+                            <option value="all">All Categories</option>
+                        </select>
+                        <input type="text" id="searchInput" placeholder="Search events..." onkeyup="filterEvents()">
+                    </div>
+                </div>
+                <div id="eventsContainer" class="events-grid">
+                    <!-- Events will be loaded here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Event Details Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeEventModal()">&times;</span>
+            <div id="eventDetails"></div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="authContent"></div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/events-page.js"></script>
+    
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/68a9f36f29353c19256cc10c/1j3btts50';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - VolunteerHub</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="/../styles/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../index.html">
+                        <i class="fas fa-heart"></i>
+                        <span>VolunteerHub</span>
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="nav-auth" id="navAuth">
+                    <div class="auth-dropdown" id="authDropdown">
+                        <button class="btn-primary" onclick="toggleAuthDropdown()">Get Started <i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown-menu" id="authDropdownMenu">
+                            <a href="#" onclick="showLogin()"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="#" onclick="showSignup()"><i class="fas fa-user-plus"></i> Sign Up</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main style="padding-top: 3rem;">
+        <video src="/video, Image/vovo.mp4" class="heroVideo" autoplay loop muted>
+                <source src="/video, Image/vovo.mp4" type="video/mp4">
+            </video>
+        <section class="hero" style="min-height: 60vh;">
+            <div class="hero-content">
+                <h1>About VolunteerHub</h1>
+                <p>Empowering communities through meaningful volunteer connections and impactful social change.</p>
+            </div>
+        </section>
+
+        <section class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>Our Mission</h2>
+                        <p>VolunteerHub bridges the gap between passionate volunteers and organizations creating positive change. We believe that everyone has the power to make a difference, and our platform makes it easier than ever to find and participate in meaningful volunteer opportunities.</p>
+                        
+                        <h2>Our Vision</h2>
+                        <p>To create a world where volunteering is accessible, impactful, and rewarding for everyone. We envision communities where individuals can easily discover causes they care about and organizations can efficiently connect with dedicated volunteers.</p>
+                        
+                        <div class="stats">
+                            <div class="stat">
+                                <h3>10,000+</h3>
+                                <p>Active Volunteers</p>
+                            </div>
+                            <div class="stat">
+                                <h3>500+</h3>
+                                <p>Events Organized</p>
+                            </div>
+                            <div class="stat">
+                                <h3>50+</h3>
+                                <p>Partner Organizations</p>
+                            </div>
+                            <div class="stat">
+                                <h3>25+</h3>
+                                <p>Cities Served</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-features">
+                        <h2>What We Offer</h2>
+                        <div class="feature">
+                            <i class="fas fa-search"></i>
+                            <div>
+                                <h3>Easy Discovery</h3>
+                                <p>Find volunteer opportunities that match your interests, skills, and schedule with our advanced search and filtering system.</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                <h3>Event Management</h3>
+                                <p>Comprehensive tools for organizers to create, manage, and coordinate volunteer events with ease.</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h3>Community Building</h3>
+                                <p>Connect with like-minded volunteers and build lasting relationships while making a positive impact.</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-heart"></i>
+                            <div>
+                                <h3>Impact Tracking</h3>
+                                <p>Monitor your volunteer journey and see the real difference you're making in your community.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="background: var(--bg-secondary); padding: 4rem 0;">
+            <div class="container">
+                <div class="text-center">
+                    <h2>Ready to Make a Difference?</h2>
+                    <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;">Join thousands of volunteers creating positive change in communities worldwide.</p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn-primary btn-large" onclick="showSignup()">Start Volunteering</button>
+                        <button class="btn-secondary btn-large" onclick="showSignup('organizer')">Organize Events</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-heart"></i>
+                        <span>VolunteerHub</span>
+                    </div>
+                    <p>Connecting volunteers with meaningful opportunities worldwide.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="events.html">Browse Events</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 VolunteerHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="authContent"></div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/68a9f36f29353c19256cc10c/1j3btts50';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+</body>
+</html>

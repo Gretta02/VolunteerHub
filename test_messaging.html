@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Messaging System</title>
+</head>
+<body>
+    <h1>Test Messaging System</h1>
+    
+    <h2>1. Send Test Message</h2>
+    <button onclick="sendTestMessage()">Send Message from Organizer (ID: 31) to Volunteer (ID: 4)</button>
+    
+    <h2>2. Check Messages</h2>
+    <button onclick="checkMessages()">Check Messages for Volunteer (ID: 4)</button>
+    
+    <h2>3. Results</h2>
+    <div id="results"></div>
+
+    <script>
+        async function sendTestMessage() {
+            const messageData = {
+                fromUserId: 31,
+                toUserId: 4,
+                message: "Test message from organizer to volunteer"
+            };
+            
+            try {
+                const response = await fetch('./api/messages.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(messageData)
+                });
+                
+                const result = await response.json();
+                document.getElementById('results').innerHTML += `<p>Send Result: ${JSON.stringify(result)}</p>`;
+            } catch (error) {
+                document.getElementById('results').innerHTML += `<p>Send Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function checkMessages() {
+            try {
+                const response = await fetch('./api/messages.php?user_id=4');
+                const messages = await response.json();
+                document.getElementById('results').innerHTML += `<p>Messages: ${JSON.stringify(messages, null, 4)}</p>`;
+            } catch (error) {
+                document.getElementById('results').innerHTML += `<p>Check Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

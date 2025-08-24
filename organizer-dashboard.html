@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Dashboard - VolunteerHub</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../index.html">
+                        <i class="fas fa-heart"></i>
+                        <span>VolunteerHub</span>
+                    </a>
+                    
+                </div>
+
+                <div class="nav-auth">
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-avatar" onclick="toggleUserDropdown()">
+                            <div class="avatar-circle">👤</div>
+                            <span id="userName"></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="#" onclick="showProfile()"><i class="fas fa-user"></i> Profile</a>
+                            <a href="#" onclick="showSettings()"><i class="fas fa-cog"></i> Settings</a>
+                            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Left Sidebar -->
+    <aside class="left-sidebar">
+        <nav class="sidebar-nav">
+            <a href="#my-events" class="nav-link active"><i class="fas fa-calendar-check"></i></a>
+            <a href="#create-event" class="nav-link" onclick="showCreateEventForm()"><i class="fas fa-plus-circle"></i></a>
+            <a href="#" class="nav-link" onclick="showMessages()"><i class="fas fa-envelope"></i></a>
+            <a href="#" class="nav-link" onclick="toggleCalendarSidebar()"><i class="fas fa-calendar"></i></a>
+        </nav>
+    </aside>
+
+    <!-- Calendar Sidebar -->
+    <div id="calendarSidebar" class="calendar-sidebar">
+        <div class="sidebar-header">
+            <h3>Calendar</h3>
+            <button class="close-sidebar" onclick="toggleCalendarSidebar()">&times;</button>
+        </div>
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button class="btn-secondary" onclick="previousMonth()">&lt;</button>
+                <h4 id="currentMonth"></h4>
+                <button class="btn-secondary" onclick="nextMonth()">&gt;</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Calendar will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <main class="dashboard-main" id="dashboardMain">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Organizer Dashboard</h1>
+                <p>Manage your events and coordinate with volunteers</p>
+                <button class="btn-primary" onclick="showCreateEventForm()">
+                    <i class="fas fa-plus"></i> Create New Event
+                </button>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalEvents">0</h3>
+                        <p>Total Events</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalVolunteers">0</h3>
+                        <p>Total Volunteers</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="activeEvents">0</h3>
+                        <p>Active Events</p>
+                    </div>
+                </div>
+            </div>
+
+            <section id="my-events" class="dashboard-section">
+                <div class="section-header">
+                    <h2>My Events</h2>
+                    <div class="section-filters">
+                        <select id="eventStatusFilter" onchange="filterOrganizerEvents()">
+                            <option value="all">All Events</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="organizerEventsContainer" class="events-grid">
+                    <!-- Organizer's events will be loaded here -->
+                </div>
+            </section>
+
+
+
+            <section id="profile" class="dashboard-section hidden">
+                <div class="section-header">
+                    <h2>My Profile</h2>
+                    <button class="btn-secondary" onclick="hideProfile()">Back to Dashboard</button>
+                </div>
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <div class="avatar-large" id="organizerAvatar">🏢</div>
+                            <button class="btn-secondary btn-small" onclick="showAvatarSelector()">Change Logo</button>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="profileName"></h3>
+                            <p id="profileEmail"></p>
+                            <span class="profile-badge organizer">Organizer</span>
+                        </div>
+                    </div>
+                    <div class="profile-details">
+                        <form id="profileForm" onsubmit="updateProfile(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profileOrgName">Organization Name</label>
+                                    <input type="text" id="profileOrgName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profilePhone">Contact Phone</label>
+                                    <input type="tel" id="profilePhone">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileLocation">Location</label>
+                                <input type="text" id="profileLocation">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileWebsite">Website</label>
+                                <input type="url" id="profileWebsite" placeholder="https://">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileDescription">Organization Description</label>
+                                <textarea id="profileDescription" rows="4" placeholder="Describe your organization and mission..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Focus Areas</label>
+                                <div class="interests-grid" id="categoriesGrid">
+                                    <!-- Category checkboxes will be generated here -->
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section id="settings" class="dashboard-section hidden">
+                <div class="section-header">
+                    <h2>Settings</h2>
+                    <button class="btn-secondary" onclick="hideSettings()">Back to Dashboard</button>
+                </div>
+                <div class="settings-container">
+                    <div class="settings-group">
+                        <h3>Notifications</h3>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="emailNotifications" checked> Email notifications for new volunteers</label>
+                        </div>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="eventUpdates" checked> Event update notifications</label>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h3>Organization</h3>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="publicProfile" checked> Make organization profile public</label>
+                        </div>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="autoApprove" checked> Auto-approve volunteer registrations</label>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h3>Account</h3>
+                        <button class="btn-danger" onclick="deleteAccount()">Delete Account</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="create-event" class="dashboard-section hidden">
+                <div class="section-header">
+                    <h2>Create New Event</h2>
+                    <button class="btn-secondary" onclick="hideCreateEventForm()">Cancel</button>
+                </div>
+                <form id="createEventForm" class="event-form" onsubmit="handleCreateEvent(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventTitle">Event Title</label>
+                            <input type="text" id="eventTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventCategory">Category</label>
+                            <select id="eventCategory" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventDate">Date</label>
+                            <input type="date" id="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventTime">Time</label>
+                            <input type="time" id="eventTime" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventLocation">Location</label>
+                            <input type="text" id="eventLocation" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="maxVolunteers">Max Volunteers</label>
+                            <input type="number" id="maxVolunteers" min="1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">Description</label>
+                        <textarea id="eventDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventRequirements">Requirements (Optional)</label>
+                        <textarea id="eventRequirements" rows="3" placeholder="Any special requirements or skills needed..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Create Event</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- Event Management Modal -->
+    <div id="eventManageModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeEventManageModal()">&times;</span>
+            <div id="eventManageContent"></div>
+        </div>
+    </div>
+
+    <!-- Volunteer List Modal -->
+    <div id="volunteerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeVolunteerModal()">&times;</span>
+            <div id="volunteerList"></div>
+        </div>
+    </div>
+
+    <!-- Messages Modal -->
+    <div id="messagesModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeMessagesModal()">&times;</span>
+            <div id="messagesContent">
+                <h2>Send Message to Volunteers</h2>
+                <div id="volunteerSelect"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Avatar Selector Modal -->
+    <div id="avatarModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAvatarModal()">&times;</span>
+            <div class="avatar-selector">
+                <h3>Choose Your Avatar</h3>
+                <div class="avatar-options">
+                    <div class="option-section">
+                        <h4>Upload Photo</h4>
+                        <div class="upload-preview" id="uploadPreview"></div>
+                        <input type="file" id="avatarUpload" accept="image/*" onchange="handleImageUpload(event)">
+                        <label for="avatarUpload" class="upload-btn">Choose File</label>
+                    </div>
+                    <div class="option-section">
+                        <h4>Or Choose Emoji</h4>
+                        <div class="avatar-grid" id="avatarGrid"></div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="saveSelectedAvatar()">Save Avatar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/calendar.js"></script>
+    <script src="../js/organizer-dashboard.js"></script>
+</body>
+</html>

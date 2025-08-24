@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Dashboard - VolunteerHub</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../index.html">
+                        <i class="fas fa-heart"></i>
+                        <span>VolunteerHub</span>
+                    </a>
+                </div>
+
+                <div class="nav-auth">
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-avatar" onclick="toggleUserDropdown()">
+                            <div class="avatar-circle">👤</div>
+                            <span id="userName"></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="#" onclick="showProfile()"><i class="fas fa-user"></i> Profile</a>
+                            <a href="#" onclick="showSettings()"><i class="fas fa-cog"></i> Settings</a>
+                            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Left Sidebar -->
+    <aside class="left-sidebar">
+        <nav class="sidebar-nav">
+            <a href="#my-events" class="nav-link active"><i class="fas fa-calendar-check"></i></a>
+            <a href="#browse-events" class="nav-link"><i class="fas fa-search"></i></a>
+
+            <a href="#" class="nav-link" onclick="showNotifications()" id="notificationBell"><i class="fas fa-bell"></i><span id="notificationBadge" class="notification-badge" style="display: none;">0</span></a>
+            <a href="#" class="nav-link" onclick="toggleCalendarSidebar()"><i class="fas fa-calendar"></i></a>
+        </nav>
+    </aside>
+
+    <!-- Calendar Sidebar -->
+    <div id="calendarSidebar" class="calendar-sidebar">
+        <div class="sidebar-header">
+            <h3>My Calendar</h3>
+            <button class="close-sidebar" onclick="toggleCalendarSidebar()">&times;</button>
+        </div>
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button class="btn-secondary" onclick="previousMonth()">&lt;</button>
+                <h4 id="currentMonth"></h4>
+                <button class="btn-secondary" onclick="nextMonth()">&gt;</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Calendar will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <main class="dashboard-main" id="dashboardMain">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Volunteer Dashboard</h1>
+                <p>Manage your volunteer activities and discover new opportunities</p>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="registeredCount">0</h3>
+                        <p>Registered Events</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="upcomingCount">0</h3>
+                        <p>Upcoming Events</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="completedCount">0</h3>
+                        <p>Completed Events</p>
+                    </div>
+                </div>
+            </div>
+
+            <section id="my-events" class="dashboard-section">
+                <div class="section-header">
+                    <h2>My Registered Events</h2>
+                    <div class="section-filters">
+                        <select id="eventFilter" onchange="filterMyEvents()">
+                            <option value="all">All Events</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="past">Past</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="myEventsContainer" class="events-grid">
+                    <!-- User's registered events will be loaded here -->
+                </div>
+            </section>
+
+
+
+            <section id="browse-events" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Discover Events</h2>
+                    <div class="section-filters">
+                        <select id="categoryFilter" onchange="filterEvents()">
+                            <option value="all">All Categories</option>
+                        </select>
+                        <input type="text" id="searchInput" placeholder="Search events...">
+                    </div>
+                </div>
+                <div id="browseEventsContainer" class="events-grid">
+                    <!-- Available events will be loaded here -->
+                </div>
+            </section>
+
+            <section id="profile" class="dashboard-section hidden">
+                <div class="section-header">
+                    <h2>My Profile</h2>
+                    <button class="btn-secondary" onclick="hideProfile()">Back to Dashboard</button>
+                </div>
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <div class="avatar-large" id="volunteerAvatar">👤</div>
+                            <button class="btn-secondary btn-small" onclick="showAvatarSelector()">Change Photo</button>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="profileName"></h3>
+                            <p id="profileEmail"></p>
+                            <span class="profile-badge">Volunteer</span>
+                        </div>
+                    </div>
+                    <div class="profile-details">
+                        <form id="profileForm" onsubmit="updateProfile(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profileFullName">Full Name</label>
+                                    <input type="text" id="profileFullName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profilePhone">Phone</label>
+                                    <input type="tel" id="profilePhone">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileLocation">Location</label>
+                                <input type="text" id="profileLocation">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileBio">Bio</label>
+                                <textarea id="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Interests</label>
+                                <div class="interests-grid" id="interestsGrid">
+                                    <!-- Interest checkboxes will be generated here -->
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section id="settings" class="dashboard-section hidden">
+                <div class="section-header">
+                    <h2>Settings</h2>
+                    <button class="btn-secondary" onclick="hideSettings()">Back to Dashboard</button>
+                </div>
+                <div class="settings-container">
+                    <div class="settings-group">
+                        <h3>Notifications</h3>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="emailNotifications" checked> Email notifications for new events</label>
+                        </div>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="eventReminders" checked> Event reminders</label>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h3>Privacy</h3>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="profileVisible" checked> Make profile visible to organizers</label>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h3>Account</h3>
+                        <button class="btn-danger" onclick="deleteAccount()">Delete Account</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="recommended" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Recommended for You</h2>
+                    <p>Based on your interests and location</p>
+                </div>
+                <div id="recommendedEventsContainer" class="events-grid">
+                    <!-- Recommended events will be loaded here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Event Details Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeEventModal()">&times;</span>
+            <div id="eventDetails"></div>
+        </div>
+    </div>
+
+    <!-- Avatar Selector Modal -->
+    <div id="avatarModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAvatarModal()">&times;</span>
+            <div class="avatar-selector">
+                <h3>Choose Your Avatar</h3>
+                <div class="avatar-options">
+                    <div class="option-section">
+                        <h4>Upload Photo</h4>
+                        <div class="upload-preview" id="uploadPreview"></div>
+                        <input type="file" id="avatarUpload" accept="image/*" onchange="handleImageUpload(event)">
+                        <label for="avatarUpload" class="upload-btn">Choose File</label>
+                    </div>
+                    <div class="option-section">
+                        <h4>Or Choose Emoji</h4>
+                        <div class="avatar-grid" id="avatarGrid"></div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="saveSelectedAvatar()">Save Avatar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/calendar.js"></script>
+    <script src="../js/volunteer-dashboard.js"></script>
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/68a9f36f29353c19256cc10c/1j3btts50';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+    <!-- Notifications Modal -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeNotificationsModal()">&times;</span>
+            <div id="notificationsContent">
+                <h2>Notifications</h2>
+                <div id="messagesList"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
